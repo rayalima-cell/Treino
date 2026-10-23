@@ -217,6 +217,26 @@ server.post('/agendamentos', (req, res) =>{
 
 });
 
+server.put('/usuarios/:id', (req, res) =>{
+
+    const id_usuario = req.params.id;
+    const {nome, email, senha} = req.body;
+    const sql = 'UPDATE usuarios SET nome = ?, email = ?, senha = ? WHERE id_usuario = ?';
+
+    connection.query(sql, [nome, email, senha, id_usuario], (erro, resultados) =>{
+        if(erro){
+            return res.status(500).json({erro: erro.message});
+        }
+        return res.json({
+            mensagem: 'Usuario atualizado com sucesso',
+            id_usuario: id_usuario,
+            nome: nome,
+            email: email,
+            senha: senha
+        });
+    });
+});
+
 server.listen(3023, () =>{
     console.log("Servidor rodando na porta 3023");
 });

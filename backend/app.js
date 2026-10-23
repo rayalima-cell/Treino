@@ -297,6 +297,21 @@ server.put('/agendamentos/:id', (req, res) =>{
     });
 });
 
+server.delete('/usuarios/:id', (req, res) =>{
+    const id_usuario = req.params.id;
+    const sql = 'DELETE FROM usuarios WHERE id_usuario = ?';
+
+    connection.query(sql, [id_usuario], (erro, resultados) =>{
+        if(erro){
+            return res.status(500).json({erro: erro.message});
+        }
+        return res.json({
+            mensagem: 'Usuario deletado com sucesso',
+            id_usuario: id_usuario
+        });
+    }); 
+})
+
 server.listen(3023, () =>{
     console.log("Servidor rodando na porta 3023");
 });

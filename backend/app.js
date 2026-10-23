@@ -237,6 +237,66 @@ server.put('/usuarios/:id', (req, res) =>{
     });
 });
 
+server.put('/alunos/:id', (req, res) =>{
+    const id_aluno = req.params.id;
+    const {nome, Cpf, Telefone} = req.body;
+    const sql = 'UPDATE alunos SET nome = ?, Cpf = ?, Telefone = ? WHERE id_aluno = ?';
+
+    connection.query(sql, [nome, Cpf, Telefone, id_aluno], (erro, resultados) =>{
+        if(erro){
+            return res.status(500).json({erro: erro.message});
+        }
+        return res.json({
+            mensagem: 'Aluno atualizado com sucesso',
+            id_aluno: id_aluno,
+            nome: nome,
+            Cpf: Cpf,
+            Telefone: Telefone
+        });
+    });
+});
+
+server.put('/plano_treinos/:id', (req, res) =>{
+    const id_plano = req.params.id;
+    const {id_aluno, descricao, objetivo, data_criacao} = req.body;
+    const sql = 'UPDATE plano_treinos SET id_aluno = ?, descricao = ?, objetivo = ?, data_criacao = ? WHERE id_plano = ?';
+
+    connection.query(sql, [id_aluno, descricao, objetivo, data_criacao, id_plano], (erro, resultados) =>{
+        if(erro){
+            return res.status(500).json({erro: erro.message});
+        }
+        return res.json({
+            mensagem: 'Plano de treino atualizado com sucesso',
+            id_plano: id_plano,
+            id_aluno: id_aluno,
+            descricao: descricao,
+            objetivo: objetivo,
+            data_criacao: data_criacao
+        });
+    });
+});
+
+server.put('/agendamentos/:id', (req, res) =>{
+    const id_agendamento = req.params.id;
+    const {id_plano, id_aluno, data_hora, nome_personal, status} = req.body;
+    const sql = 'UPDATE agendamentos SET id_plano = ?, id_aluno = ?, data_hora = ?, nome_personal = ?, status = ? WHERE id_agendamento = ?';    
+
+    connection.query(sql, [id_plano, id_aluno, data_hora, nome_personal, status, id_agendamento], (erro, resultados) =>{
+        if(erro){
+            return res.status(500).json({erro: erro.message});
+        }
+        return res.json({
+            mensagem: 'Agendamento atualizado com sucesso',
+            id_agendamento: id_agendamento,
+            id_plano: id_plano,
+            id_aluno: id_aluno,
+            data_hora: data_hora,
+            nome_personal: nome_personal,
+            status: status
+        });
+    });
+});
+
 server.listen(3023, () =>{
     console.log("Servidor rodando na porta 3023");
 });
